@@ -24,3 +24,10 @@ h1 {
     transform: translate(-50%);
     background-color: blueviolet;
 }
+
+.bullet {
+    position: absolute;
+    width: 6px;
+    height: 10px;
+    background-color: red;
+}
