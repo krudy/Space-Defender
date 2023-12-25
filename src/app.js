@@ -45,6 +45,35 @@ const handleKeyboard = (event) => {
 //handling the keyboard
 window.addEventListener('keydown', handleKeyboard);
 
+const checkCollision = (bulletPosition, enemyPosition) => {
+    return (bulletPosition.left > enemyPosition.left && bulletPosition.right < enemyPosition.right) && (bulletPosition.top < enemyPosition.bottom)
+}
+
+const checkBulletCollision = (bullet) => {
+    const position = bullet.getBoundingClientRect();
+
+    for (let i = 0; i < enemies.length; i++ ) {
+        const enemy = enemies[i];
+        const enemyPosition = enemy.getBoundingClientRect();
+        
+        //checking that the missile and the enemy ship are in the same place
+        if(checkCollision(position, enemyPosition)) {
+            //bullet removal
+            const bulletIndex = bullets.indexOf(bullet);
+            bullets.splice(bulletIndex,1);
+            bullet.remove();
+
+
+            //removal of a stricken ship
+            enemies.splice(i,1);
+            enemy.remove(); 
+
+            break;
+
+        }
+    }
+}
+
 const moveBullets = () => {
     for (let i = 0; i < bullets.length; i++) {
         const bullet = bullets[i];
@@ -57,7 +86,10 @@ const moveBullets = () => {
             bullets.splice(i, 1);
             i--;
             bullet.remove();
+        }else {
+            checkBulletCollision(bullet);
         }
+
     }
 }
 
@@ -70,7 +102,7 @@ const createEnemy = () => {
     const enemy = document.createElement('div');
     enemy.className = 'enemy';
     enemy.style.top = -40;
-    enemy.style.left = `${Math.floor(Math.random() * (gameBoardElement.offsetWidth - 60) + 60)}px`;
+    enemy.style.left = `${Math.floor(Math.random() * (gameBoardElement.offsetWidth - 120) + 60)}px`;
 
     // adding nemy to the game area
     gameBoardElement.appendChild(enemy);
