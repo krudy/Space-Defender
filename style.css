@@ -54,3 +54,26 @@ h1 {
     position: absolute;
     background: url("./img/explosion.png") no-repeat center / contain;
 }
+
+@font-face{
+    font-family:'Orbitron';
+    src: url('https://fonts.googleapis.com/css?family=Orbitron');
+   }
+
+.score {
+    z-index: 3;
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: white;
+    height: 10px;
+    font-family: 'Orbitron', sans-serif;
+
+}
+
+.score img { 
+    width: 22px;
+    vertical-align: middle;
+}

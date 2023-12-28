@@ -1,9 +1,11 @@
 // getting html elements
 const playerElement = document.querySelector('#player');
 const gameBoardElement = document.querySelector('#game-board');
+const scoreCounterElement = document.querySelector('#pointsCounter')
 
 const bullets = [];
 const enemies = [];
+let score = 0;
 
 const movePlayer = (direction) => {
     // calculation of player's new position
@@ -64,6 +66,11 @@ const makeExplosion = (leftPosition, topPosition) => {
     
 }
 
+const addScore = (points = 0) => {
+    score += points;
+    scoreCounterElement.innerText = score;
+}
+
 const checkBulletCollision = (bullet) => {
     const position = bullet.getBoundingClientRect();
 
@@ -77,6 +84,9 @@ const checkBulletCollision = (bullet) => {
             const bulletIndex = bullets.indexOf(bullet);
             bullets.splice(bulletIndex,1);
             bullet.remove();
+
+            //adding point
+            addScore(1);
 
             //adding explosions
             makeExplosion(enemy.offsetLeft, enemy.offsetTop);
