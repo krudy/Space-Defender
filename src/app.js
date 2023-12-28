@@ -49,6 +49,21 @@ const checkCollision = (bulletPosition, enemyPosition) => {
     return (bulletPosition.left > enemyPosition.left && bulletPosition.right < enemyPosition.right) && (bulletPosition.top < enemyPosition.bottom)
 }
 
+const makeExplosion = (leftPosition, topPosition) => {
+    // explosion definition
+    const explosion = document.createElement('div');
+    explosion.className = 'explosion';
+    explosion.style.left = `${leftPosition}px`;
+    explosion.style.top = `${topPosition}px`;
+
+    //adding explosion to the game area
+    gameBoardElement.appendChild(explosion);
+
+    //deleting explosion after 1 second 
+    setTimeout(() => {explosion.remove();},1000)
+    
+}
+
 const checkBulletCollision = (bullet) => {
     const position = bullet.getBoundingClientRect();
 
@@ -63,6 +78,8 @@ const checkBulletCollision = (bullet) => {
             bullets.splice(bulletIndex,1);
             bullet.remove();
 
+            //adding explosions
+            makeExplosion(enemy.offsetLeft, enemy.offsetTop);
 
             //removal of a stricken ship
             enemies.splice(i,1);
@@ -127,5 +144,5 @@ const moveEnemies = () => {
 
 //intervals
 setInterval(moveBullets, 50);
-setInterval(moveEnemies,300)
+setInterval(moveEnemies,200)
 setInterval(createEnemy,1000);
