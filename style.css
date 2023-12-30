@@ -55,6 +55,21 @@ h1 {
     background: url("./img/explosion.png") no-repeat center / contain;
 }
 
+#lifes {
+    z-index: 3;
+    right: 20px;
+    top: 20px;
+    position: absolute;
+    display: flex;
+    gap: 10px;
+}
+
+.life {
+    width: 25px;
+    height: 25px;
+    background: url('./img/life.png') no-repeat center / contain;  
+}
+
 @font-face{
     font-family:'Orbitron';
     src: url('https://fonts.googleapis.com/css?family=Orbitron');

@@ -1,11 +1,22 @@
 // getting html elements
 const playerElement = document.querySelector('#player');
 const gameBoardElement = document.querySelector('#game-board');
-const scoreCounterElement = document.querySelector('#pointsCounter')
+const scoreCounterElement = document.querySelector('#pointsCounter');
+const lifesElement = document.querySelector('#lifes');
 
 const bullets = [];
 const enemies = [];
 let score = 0;
+let lifes = 3;
+
+const showLifes = () => {
+    const html = Array(lifes)
+        .fill(0)
+        .map(element => '<div class="life"></div>' )
+        .join('');
+
+    lifesElement.innerHTML = html;
+}
 
 const movePlayer = (direction) => {
     // calculation of player's new position
@@ -62,8 +73,8 @@ const makeExplosion = (leftPosition, topPosition) => {
     gameBoardElement.appendChild(explosion);
 
     //deleting explosion after 1 second 
-    setTimeout(() => {explosion.remove();},1000)
-    
+    setTimeout(() => { explosion.remove(); }, 1000)
+
 }
 
 const addScore = (points = 0) => {
@@ -74,15 +85,15 @@ const addScore = (points = 0) => {
 const checkBulletCollision = (bullet) => {
     const position = bullet.getBoundingClientRect();
 
-    for (let i = 0; i < enemies.length; i++ ) {
+    for (let i = 0; i < enemies.length; i++) {
         const enemy = enemies[i];
         const enemyPosition = enemy.getBoundingClientRect();
-        
+
         //checking that the missile and the enemy ship are in the same place
-        if(checkCollision(position, enemyPosition)) {
+        if (checkCollision(position, enemyPosition)) {
             //bullet removal
             const bulletIndex = bullets.indexOf(bullet);
-            bullets.splice(bulletIndex,1);
+            bullets.splice(bulletIndex, 1);
             bullet.remove();
 
             //adding point
@@ -92,8 +103,8 @@ const checkBulletCollision = (bullet) => {
             makeExplosion(enemy.offsetLeft, enemy.offsetTop);
 
             //removal of a stricken ship
-            enemies.splice(i,1);
-            enemy.remove(); 
+            enemies.splice(i, 1);
+            enemy.remove();
 
             break;
 
@@ -113,7 +124,7 @@ const moveBullets = () => {
             bullets.splice(i, 1);
             i--;
             bullet.remove();
-        }else {
+        } else {
             checkBulletCollision(bullet);
         }
 
@@ -123,7 +134,7 @@ const moveBullets = () => {
 const createEnemy = () => {
 
     const shouldCreate = Math.round(Math.random());
-    if(!shouldCreate) return;
+    if (!shouldCreate) return;
 
     //enemy definition
     const enemy = document.createElement('div');
@@ -137,22 +148,34 @@ const createEnemy = () => {
 }
 
 const moveEnemies = () => {
-    for (let i = 0; i < enemies.length; i++){
+    for (let i = 0; i < enemies.length; i++) {
         const enemy = enemies[i];
 
-       //moving enemies
-       enemy.style.top = `${enemy.offsetTop + 5}px`; 
+        //moving enemies
+        enemy.style.top = `${enemy.offsetTop + 5}px`;
 
-       //removin enemies
-       if(enemy.offsetTop >= gameBoardElement.offsetHeight){
-        enemies.splice(i,1);
-        enemy.remove();
-        alert('GAME OVER');
-       }
+        //removin enemies
+        if (enemy.offsetTop >= gameBoardElement.offsetHeight) {
+            
+            //deleting enemy
+            enemies.splice(i, 1);
+            enemy.remove();
+
+            //reduction of life points
+            lifes -= 1;
+            showLifes();
+            
+            //ending the game
+            if(lifes === 0) {
+                
+                alert('GAME OVER');
+            }
+        }
     }
 }
 
 //intervals
 setInterval(moveBullets, 50);
-setInterval(moveEnemies,200)
-setInterval(createEnemy,1000);
+setInterval(moveEnemies, 200)
+setInterval(createEnemy, 1000);
+showLifes();
