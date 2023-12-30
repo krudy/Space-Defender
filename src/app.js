@@ -3,6 +3,7 @@ const playerElement = document.querySelector('#player');
 const gameBoardElement = document.querySelector('#game-board');
 const scoreCounterElement = document.querySelector('#pointsCounter');
 const lifesElement = document.querySelector('#lifes');
+const gameEndElement = document.querySelector('.game-end');
 
 const bullets = [];
 const enemies = [];
@@ -167,15 +168,26 @@ const moveEnemies = () => {
             
             //ending the game
             if(lifes === 0) {
-                
-                alert('GAME OVER');
+                gameOver();
             }
         }
     }
 }
 
+let moveEnemiesInterval;
+let createEnemyInterval;
+
+
+const gameOver = () => {
+    gameEndElement.style.display = 'block';
+    clearInterval(moveEnemiesInterval);
+    clearInterval(createEnemyInterval);
+    gameBoardElement.style.animation = 'none';
+}
+
 //intervals
 setInterval(moveBullets, 50);
-setInterval(moveEnemies, 200)
-setInterval(createEnemy, 1000);
+moveEnemiesInterval = setInterval(moveEnemies, 200)
+createEnemyInterval = setInterval(createEnemy, 1000);
+
 showLifes();
