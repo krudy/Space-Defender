@@ -4,6 +4,7 @@ const gameBoardElement = document.querySelector('#game-board');
 const scoreCounterElement = document.querySelector('#pointsCounter');
 const lifesElement = document.querySelector('#lifes');
 const gameEndElement = document.querySelector('.game-end');
+const startAgainButton = document.querySelector('#buttonRestartGame');
 
 const bullets = [];
 const enemies = [];
@@ -174,6 +175,10 @@ const moveEnemies = () => {
     }
 }
 
+const startAgain = () => {
+    window.location.reload();
+}
+
 let moveEnemiesInterval;
 let createEnemyInterval;
 
@@ -191,3 +196,5 @@ moveEnemiesInterval = setInterval(moveEnemies, 200)
 createEnemyInterval = setInterval(createEnemy, 1000);
 
 showLifes();
+
+startAgainButton.addEventListener('click', startAgain)

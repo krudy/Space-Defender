@@ -82,6 +82,16 @@ h1 {
     transform: translate(-50%, -50%);
     display: none;
 }
+ 
+#buttonRestartGame {
+    color: #fff;
+    background-color: #494975;
+    border: 3px dashed #585897;
+    display: block;
+    padding: 10px 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
 
 @font-face{
     font-family:'Orbitron';
