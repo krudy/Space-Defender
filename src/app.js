@@ -22,7 +22,7 @@ const showLifes = () => {
     lifesElement.innerHTML = html;
 }
 
-const movePlayer = (direction) => {
+const movePlayerX = (direction) => {
     // calculation of player's new position
     const newPosition = playerElement.offsetLeft + direction * 10;
 
@@ -37,12 +37,24 @@ const movePlayer = (direction) => {
     }
 }
 
+const movePlayerY = (direction) => {
+    // calculation of player's new position
+    const newPosition = playerElement.offsetTop + direction * 10;
+    const minTop = 0;
+    const maxTop = gameBoardElement.offsetHeight - playerElement.offsetHeight;
+
+    // checking that the player's position doesn't cross the board field
+    if (newPosition >= minTop && newPosition < maxTop) {
+        playerElement.style.top = `${newPosition}px`;
+    }
+}
+
 const createBullet = () => {
     // bullet definition
     const bullet = document.createElement('div');
     bullet.className = 'bullet';
     bullet.style.left = `${playerElement.offsetLeft}px`;
-    bullet.style.bottom = `${playerElement.offsetHeight}px`;
+    bullet.style.top = `${playerElement.offsetTop}px`;
 
     // adding bullet to the gameboard area
     gameBoardElement.appendChild(bullet);
@@ -52,8 +64,10 @@ const createBullet = () => {
 
 const handleKeyboard = (event) => {
     switch (event.code) {
-        case 'ArrowLeft': { movePlayer(-1); break; }
-        case 'ArrowRight': { movePlayer(1); break; }
+        case 'ArrowLeft': { movePlayerX(-1); break; }
+        case 'ArrowRight': { movePlayerX(1); break; }
+        case 'ArrowUp': { movePlayerY(-1); break; }
+        case 'ArrowDown': { movePlayerY(1); break; }
         case 'Space': createBullet();
 
     }
