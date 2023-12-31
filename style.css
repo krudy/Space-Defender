@@ -70,7 +70,7 @@ h1 {
     background: url('./img/life.png') no-repeat center / contain;  
 }
 
-.game-end {
+.card {
     z-index: 4;
     position: absolute;
     left: 50%;
@@ -80,6 +80,9 @@ h1 {
     width: 300px;
     background-color: #2c2c48;
     transform: translate(-50%, -50%);
+}
+
+#game-end {
     display: none;
 }
  

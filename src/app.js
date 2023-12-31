@@ -3,8 +3,10 @@ const playerElement = document.querySelector('#player');
 const gameBoardElement = document.querySelector('#game-board');
 const scoreCounterElement = document.querySelector('#pointsCounter');
 const lifesElement = document.querySelector('#lifes');
-const gameEndElement = document.querySelector('.game-end');
+const gameEndCardElement = document.querySelector('#game-end');
+const gameStartCardElement = document.querySelector('#game-start');
 const startAgainButton = document.querySelector('#buttonRestartGame');
+const startButton = document.querySelector('#buttonStartGame');
 
 const bullets = [];
 const enemies = [];
@@ -184,17 +186,27 @@ let createEnemyInterval;
 
 
 const gameOver = () => {
-    gameEndElement.style.display = 'block';
+    gameEndCardElement.style.display = 'block';
     clearInterval(moveEnemiesInterval);
     clearInterval(createEnemyInterval);
     gameBoardElement.style.animation = 'none';
 }
 
-//intervals
-setInterval(moveBullets, 50);
-moveEnemiesInterval = setInterval(moveEnemies, 200)
-createEnemyInterval = setInterval(createEnemy, 1000);
+const startGame = () => {
 
-showLifes();
+    gameStartCardElement.style.display = 'none';
+ 
+    showLifes();
+    //intervals
 
-startAgainButton.addEventListener('click', startAgain)
+    setInterval(moveBullets, 50);
+    moveEnemiesInterval = setInterval(moveEnemies, 200)
+    createEnemyInterval = setInterval(createEnemy, 1000);
+    
+
+}
+
+
+
+startButton.addEventListener('click', startGame);
+startAgainButton.addEventListener('click', startAgain);
