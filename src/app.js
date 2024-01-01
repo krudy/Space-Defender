@@ -1,52 +1,21 @@
-// getting html elements
-const playerElement = document.querySelector('#player');
-const gameBoardElement = document.querySelector('#game-board');
-const scoreCounterElement = document.querySelector('#pointsCounter');
-const lifesElement = document.querySelector('#lifes');
-const gameEndCardElement = document.querySelector('#game-end');
-const gameStartCardElement = document.querySelector('#game-start');
-const startAgainButton = document.querySelector('#buttonRestartGame');
-const startButton = document.querySelector('#buttonStartGame');
+
+import elements from './elements.js';
+import Player from './player.js';
+
+const {playerElement, gameBoardElement, scoreCounterElement,lifesElement,gameEndCardElement,gameStartCardElement,startAgainButton,startButton} = elements;
 
 const bullets = [];
 const enemies = [];
-let score = 0;
-let lifes = 3;
+
+const player = new Player({lifes: 5, gameBoardElement: gameBoardElement, playerElement: playerElement})
 
 const showLifes = () => {
-    const html = Array(lifes)
+    const html = Array(player.getLifes())
         .fill(0)
-        .map(element => '<div class="life"></div>' )
+        .map(element => '<div class="life"></div>')
         .join('');
 
     lifesElement.innerHTML = html;
-}
-
-const movePlayerX = (direction) => {
-    // calculation of player's new position
-    const newPosition = playerElement.offsetLeft + direction * 10;
-
-    // getting game's board position
-    const { left, right } = gameBoardElement.getBoundingClientRect();
-    const minLeft = playerElement.offsetWidth / 2;
-    const maxRight = right - left - minLeft;
-
-    // checking that the player's position doesn't cross the board field
-    if (newPosition >= minLeft && newPosition < maxRight) {
-        playerElement.style.left = `${newPosition}px`;
-    }
-}
-
-const movePlayerY = (direction) => {
-    // calculation of player's new position
-    const newPosition = playerElement.offsetTop + direction * 10;
-    const minTop = 0;
-    const maxTop = gameBoardElement.offsetHeight - playerElement.offsetHeight;
-
-    // checking that the player's position doesn't cross the board field
-    if (newPosition >= minTop && newPosition < maxTop) {
-        playerElement.style.top = `${newPosition}px`;
-    }
 }
 
 const createBullet = () => {
@@ -64,10 +33,10 @@ const createBullet = () => {
 
 const handleKeyboard = (event) => {
     switch (event.code) {
-        case 'ArrowLeft': { movePlayerX(-1); break; }
-        case 'ArrowRight': { movePlayerX(1); break; }
-        case 'ArrowUp': { movePlayerY(-1); break; }
-        case 'ArrowDown': { movePlayerY(1); break; }
+        case 'ArrowLeft': { player.movePlayerX(-1); break; }
+        case 'ArrowRight': { player.movePlayerX(1); break; }
+        case 'ArrowUp': { player.movePlayerY(-1); break; }
+        case 'ArrowDown': { player.movePlayerY(1); break; }
         case 'Space': createBullet();
 
     }
@@ -96,8 +65,8 @@ const makeExplosion = (leftPosition, topPosition) => {
 }
 
 const addScore = (points = 0) => {
-    score += points;
-    scoreCounterElement.innerText = score;
+    player.addScore(points);
+    scoreCounterElement.innerText = player.getScore();
 }
 
 const checkBulletCollision = (bullet) => {
@@ -174,17 +143,17 @@ const moveEnemies = () => {
 
         //removin enemies
         if (enemy.offsetTop >= gameBoardElement.offsetHeight) {
-            
+
             //deleting enemy
             enemies.splice(i, 1);
             enemy.remove();
 
             //reduction of life points
-            lifes -= 1;
+            player.setLifes(getLifes() - 1);
             showLifes();
-            
+
             //ending the game
-            if(lifes === 0) {
+            if (player.getLifes() === 0) {
                 gameOver();
             }
         }
@@ -209,14 +178,14 @@ const gameOver = () => {
 const startGame = () => {
 
     gameStartCardElement.style.display = 'none';
- 
+
     showLifes();
     //intervals
 
     setInterval(moveBullets, 50);
     moveEnemiesInterval = setInterval(moveEnemies, 200)
     createEnemyInterval = setInterval(createEnemy, 1000);
-    
+
 
 }
 
