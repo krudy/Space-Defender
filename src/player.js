@@ -5,6 +5,7 @@ export default class Player {
         this.score = 0;
         this.playerElement = settings.playerElement;
         this.gameBoardElement = settings.gameBoardElement;
+        this.stage = 1;
     }
 
     getLifes(){
@@ -25,6 +26,14 @@ export default class Player {
 
     addScore(points){
         this.score += points;
+    }
+
+    getStage() {
+        return this.stage;
+    }
+    
+    setStage(number) {
+        this.stage += number;
     }
 
     

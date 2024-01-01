@@ -1,4 +1,3 @@
-
 import elements from './elements.js';
 import Player from './player.js';
 
@@ -92,11 +91,21 @@ const checkBulletCollision = (bullet) => {
             //removal of a stricken ship
             enemies.splice(i, 1);
             enemy.remove();
+            
 
+            if(player.getScore() % 5 === 0){
+               changeStage();
+            }
             break;
 
         }
     }
+}
+
+const changeStage = () => {
+    player.setStage(1);
+    changeEnemySpeed(player.getStage());
+    changeEnemyProduction(player.getStage());
 }
 
 const moveBullets = () => {
@@ -149,7 +158,7 @@ const moveEnemies = () => {
             enemy.remove();
 
             //reduction of life points
-            player.setLifes(getLifes() - 1);
+            player.setLifes(player.getLifes() - 1);
             showLifes();
 
             //ending the game
@@ -185,6 +194,18 @@ const startGame = () => {
     setInterval(moveBullets, 50);
     moveEnemiesInterval = setInterval(moveEnemies, 200)
     createEnemyInterval = setInterval(createEnemy, 1000);
+
+
+}
+
+const changeEnemySpeed = (stageLevel) => {
+    clearInterval(moveEnemiesInterval);
+    moveEnemiesInterval = setInterval(moveEnemies, 200 - (stageLevel * 5 ))
+
+}
+const changeEnemyProduction = (stageLevel) => {
+    clearInterval(createEnemyInterval);
+    createEnemyInterval = setInterval(createEnemy, 1000 - (stageLevel * 20));
 
 
 }
